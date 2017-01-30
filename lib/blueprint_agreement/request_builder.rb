@@ -105,11 +105,21 @@ module BlueprintAgreement
           headers[key] = @context.request.env[header_name]
         end
 
+        custom_headers.each do |header|
+          headers[header] = @context.request.env[header]
+        end
+
         headers.compact
       end
 
       def request
         @context.request
+      end
+
+      private
+
+      def custom_headers
+        BlueprintAgreement::Config.custom_headers || []
       end
     end
   end
