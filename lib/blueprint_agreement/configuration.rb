@@ -3,6 +3,7 @@ module BlueprintAgreement
     attr_accessor :active_service,
       :exclude_attributes,
       :allow_headers,
+      :custom_headers,
       :port,
       :hostname,
       :server_path
