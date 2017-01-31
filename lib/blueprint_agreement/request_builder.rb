@@ -107,8 +107,8 @@ module BlueprintAgreement
 
         custom_headers.each do |header|
           next unless @context.request.env.key?(header)
-          key = header.sub(/^HTTP_/n, '').downcase
-          headers[key] = @context.request.env[header]
+          key = "HTTP_" + header.upcase.tr("-", "_")
+          headers[header] = @context.request.env[key]
         end
 
         headers.compact
