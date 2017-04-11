@@ -1,3 +1,4 @@
+require 'rspec/core'
 require "minitest"
 require "minitest/spec"
 require "minitest/mock"
@@ -11,8 +12,10 @@ require 'blueprint_agreement/utils/request_logger'
 require 'blueprint_agreement/utils/requester'
 require 'blueprint_agreement/utils/response_parser'
 require 'blueprint_agreement/utils/exclude_filter'
+require 'blueprint_agreement/utils/matcher'
 require 'blueprint_agreement/minitest/assertions'
 require 'blueprint_agreement/minitest/expectations'
+require 'blueprint_agreement/rspec/matcher_shall_agree_upon'
 
 # ========================== BluePrintAgreement ==================================
 # +-----------+         +-------------------+              +-----------------+
@@ -69,8 +72,18 @@ module BlueprintAgreement
   end
 end
 
-Minitest.after_run do
+def kill_service_process
   if BlueprintAgreement.configuration.active_service?
     Process.kill 'TERM', BlueprintAgreement.configuration.active_service[:pid]
+  end
+end
+
+Minitest.after_run do
+  kill_service_process
+end
+
+RSpec.configure do |config|
+  config.after(:suite) do
+    kill_service_process
   end
 end
