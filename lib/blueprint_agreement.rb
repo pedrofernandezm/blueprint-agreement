@@ -1,4 +1,5 @@
 require "minitest"
+require 'rspec/rails'
 require "minitest/spec"
 require "minitest/mock"
 require "blueprint_agreement/version"
@@ -11,8 +12,10 @@ require 'blueprint_agreement/utils/request_logger'
 require 'blueprint_agreement/utils/requester'
 require 'blueprint_agreement/utils/response_parser'
 require 'blueprint_agreement/utils/exclude_filter'
+require 'blueprint_agreement/utils/matcher'
 require 'blueprint_agreement/minitest/assertions'
 require 'blueprint_agreement/minitest/expectations'
+require 'blueprint_agreement/rspec/matcher_shall_agree_upon'
 
 # ========================== BluePrintAgreement ==================================
 # +-----------+         +-------------------+              +-----------------+
