@@ -1,5 +1,5 @@
+require 'rspec/core'
 require "minitest"
-require 'rspec/rails'
 require "minitest/spec"
 require "minitest/mock"
 require "blueprint_agreement/version"
@@ -72,8 +72,18 @@ module BlueprintAgreement
   end
 end
 
-Minitest.after_run do
+def kill_service_process
   if BlueprintAgreement.configuration.active_service?
     Process.kill 'TERM', BlueprintAgreement.configuration.active_service[:pid]
+  end
+end
+
+Minitest.after_run do
+  kill_service_process
+end
+
+RSpec.configure do |config|
+  config.after(:suite) do
+    kill_service_process
   end
 end
