@@ -1,11 +1,13 @@
 module BlueprintAgreement
   module Utils
     class Matcher
+      include Minitest::Assertions
 
-      attr_accessor :context
+      attr_accessor :context, :assertions
 
       def initialize(context)
         @context = context
+        @assertions = 0
       end
 
       def match(contract_name, response)
