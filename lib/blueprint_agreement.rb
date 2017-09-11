@@ -1,7 +1,13 @@
-require 'rspec/core'
-require "minitest"
-require "minitest/spec"
-require "minitest/mock"
+if Module.const_defined?('RSpec')
+  require 'rspec/core'
+  require 'blueprint_agreement/rspec/matcher_shall_agree_upon'
+else
+  require "minitest"
+  require "minitest/spec"
+  require "minitest/mock"
+  require 'blueprint_agreement/minitest/assertions'
+  require 'blueprint_agreement/minitest/expectations'
+end
 require "blueprint_agreement/version"
 require 'blueprint_agreement/configuration'
 require 'blueprint_agreement/errors'
@@ -13,10 +19,6 @@ require 'blueprint_agreement/utils/requester'
 require 'blueprint_agreement/utils/response_parser'
 require 'blueprint_agreement/utils/exclude_filter'
 require 'blueprint_agreement/utils/matcher'
-require 'blueprint_agreement/minitest/assertions'
-require 'blueprint_agreement/minitest/expectations'
-require 'blueprint_agreement/rspec/matcher_shall_agree_upon'
-
 # ========================== BluePrintAgreement ==================================
 # +-----------+         +-------------------+              +-----------------+
 # | Minitest  |         | BlueprintAgreement|              |Node Environment |
@@ -78,12 +80,15 @@ def kill_service_process
   end
 end
 
-Minitest.after_run do
-  kill_service_process
-end
 
-RSpec.configure do |config|
-  config.after(:suite) do
+if Module.const_defined?('RSpec')
+  RSpec.configure do |config|
+    config.after(:suite) do
+      kill_service_process
+    end
+  end
+else
+  Minitest.after_run do
     kill_service_process
   end
 end

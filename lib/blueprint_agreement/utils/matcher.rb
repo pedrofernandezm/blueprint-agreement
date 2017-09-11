@@ -1,3 +1,5 @@
+require 'minitest/assertions'
+
 module BlueprintAgreement
   module Utils
     class Matcher
